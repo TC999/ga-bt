@@ -10,9 +10,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install language-pack-zh-hans
       - name: 修改系统语言
-        run: |
-          echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
-          source ~/.bashrc
+        run: echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
+      - name: 确认
+        run: source ~/.bashrc
       - name: 测试1
         run: locale
       - name: 测试2
