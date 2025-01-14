@@ -6,12 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 一键中文化
-        runs: |
+        run: |
           sudo apt-get update
           sudo apt-get install language-pack-zh-hans
           echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
           source ~/.bashrc
       - name: 测试
-        runs: |
+        run: |
           locale
           apt
