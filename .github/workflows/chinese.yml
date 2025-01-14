@@ -1,0 +1,17 @@
+name: 调中文测试
+on:
+  workflow_dispatch:
+jobs:
+  chinese:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 一键中文化
+        runs: |
+          sudo apt-get update
+          sudo apt-get install language-pack-zh-hans
+          echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
+          source ~/.bashrc
+      - name: 测试
+        run: |
+          locale
+          apt
