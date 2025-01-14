@@ -12,6 +12,6 @@ jobs:
           echo "export LANG=zh_CN.UTF-8" >> ~/.bashrc
           source ~/.bashrc
       - name: 测试
-        run: |
+        runs: |
           locale
           apt
