@@ -15,6 +15,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install aria2
       - name: 下载
-        run: aria2c '${{ inputs.bt }}'
+        run: aria2c --seed-time=0 --bt-seed-unverified=false '${{ inputs.bt }}'
       - name: 上传文件
         uses: actions/upload-artifact@v4
