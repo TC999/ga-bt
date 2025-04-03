@@ -16,4 +16,4 @@ jobs:
       - name: 测试1
         run: locale
       - name: 测试2
-        run: apt install firefox
+        run: sudo apt install firefox
