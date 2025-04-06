@@ -4,6 +4,8 @@ on:
 jobs:
   chinese:
     runs-on: ubuntu-latest
+    env:
+      LANG: zh_CN.UTF-8
     steps:
       - name: 一键中文化
         run: |
