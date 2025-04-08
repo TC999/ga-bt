@@ -1,0 +1,27 @@
+name: 普通下载
+on:
+  workflow_dispatch:
+    inputs:
+      bt:
+        description: '文件链接'
+        type: string
+      name:
+        description: '文件名'
+        default: download
+        type: string
+
+jobs:
+  download:
+    name: 下载
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载
+        run: |
+          mkdir downbload
+          wget ${{ inputs.bt }}
+
+      - name: 上传
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.name }}
+          path: download
