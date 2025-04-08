@@ -18,6 +18,7 @@ jobs:
       - name: 下载
         run: |
           mkdir downbload
+          cd download
           wget ${{ inputs.bt }}
 
       - name: 上传
