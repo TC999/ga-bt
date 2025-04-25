@@ -1,0 +1,57 @@
+name: Windows Qt6.8 Build
+
+on:
+  #push:
+  #pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows_qt68:
+    name: Build on Windows with Qt 6.8
+    runs-on: windows-latest
+
+    env:
+      KDECI_CACHE_PATH: C:/Gitlab/Artifacts/windows-qt6.8/
+      KDECI_GITLAB_SERVER: https://invent.kde.org/
+      KDECI_PACKAGE_PROJECT: teams/ci-artifacts/windows-qt6.8
+      KDECI_CANNOT_CREATE_WINDOWS: 1
+      CRAFT_ROOT: C:/Craft/windows-msvc2022_64-cl/
+      CXX: cl.exe
+      CC: cl.exe
+      PYTHONUTF8: 1
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Clone ci-utilities repository
+      - name: Clone ci-utilities
+        run: git clone https://invent.kde.org/sysadmin/ci-utilities.git --depth=1
+
+      # Clone repo-metadata repository
+      - name: Clone repo-metadata
+        run: git clone https://invent.kde.org/sysadmin/repo-metadata.git ci-utilities/repo-metadata/ --depth=1
+
+      # Setup MSVC 2022 environment
+      - name: Setup MSVC 2022 Environment
+        shell: pwsh
+        run: .\ci-utilities\resources\setup-msvc2022-env.ps1
+
+      # Run build script
+      - name: Run CI Build
+        run: |
+          python -u ci-utilities/run-ci-build.py \
+          --project ${{ github.event.repository.name }} \
+          --branch ${{ github.ref_name }} \
+          --platform "Windows/Qt6/Shared" \
+          --extra-cmake-args=-DBUILD_WITH_QT6=ON \
+          --extra-cmake-args=-DQT_MAJOR_VERSION=6
+
+      # Upload artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: JUnitTestResults
+          path: JUnitTestResults.xml
+          retention-days: 28
