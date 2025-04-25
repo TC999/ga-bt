@@ -22,8 +22,8 @@ jobs:
 
     steps:
       # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
+      #- name: Checkout code
+      #  uses: actions/checkout@v3
 
       # Clone ci-utilities repository
       - name: Clone ci-utilities
