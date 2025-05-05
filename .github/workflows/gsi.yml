@@ -31,11 +31,12 @@ jobs:
 
       - name: 克隆脚本
         run: |
+          cd lineage-22-build-gsi
           git clone https://github.com/AndyCGYan/lineage_build_unified lineage_build_unified -b lineage-22-light
           git clone https://github.com/AndyCGYan/lineage_patches_unified lineage_patches_unified -b lineage-22-light
 
       - name: 编译
-        run: bash lineage_build_unified/buildbot_unified.sh treble 64VN 64GN
+        run: cd lineage-22-build-gsi && bash lineage_build_unified/buildbot_unified.sh treble 64VN 64GN
 
       - name: 上传
         uses: actions/upload-artifact@v4.6.2
