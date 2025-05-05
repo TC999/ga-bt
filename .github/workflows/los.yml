@@ -12,7 +12,12 @@ jobs:
     - name: Set up environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk repo git-core
+        sudo apt-get install -y openjdk-11-jdk git-core
+
+    - name: 安装 repo
+      run: |
+        curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
+        chmod a+x /usr/bin/repo
 
     - name: Sync LineageOS source with GSI
       run: |
