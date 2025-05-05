@@ -16,8 +16,8 @@ jobs:
 
     - name: 安装 repo
       run: |
-        curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
-        chmod a+x /usr/bin/repo
+        sudo curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
+        sudo chmod a+x /usr/bin/repo
 
     - name: Sync LineageOS source with GSI
       run: |
