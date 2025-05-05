@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: 创建文件夹
         run: mkdir lineage-22-build-gsi
+        
+      - name: Cleanup
+        uses: rokibhasansagar/slimhub_actions@main
 
       - name: 安装依赖
         run: |
@@ -34,6 +37,11 @@ jobs:
           cd lineage-22-build-gsi
           git clone https://github.com/AndyCGYan/lineage_build_unified lineage_build_unified -b lineage-22-light
           git clone https://github.com/AndyCGYan/lineage_patches_unified lineage_patches_unified -b lineage-22-light
+
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 12
 
       - name: 编译
         run: cd lineage-22-build-gsi && bash ./lineage_build_unified/build_unified.sh treble 64VN 64GN
