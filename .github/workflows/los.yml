@@ -1,29 +1,38 @@
-name: Build LineageOS
+name: Build LineageOS GSI
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
     - name: Set up environment
       run: |
         sudo apt-get update
         sudo apt-get install -y openjdk-11-jdk repo git-core
-    - name: Sync LineageOS source
+
+    - name: Sync LineageOS source with GSI
       run: |
+        # 初始化 LineageOS 源码
         repo init -u https://github.com/LineageOS/android.git -b lineage-20.0
-        repo sync
-    - name: Compile LineageOS
+        # 同步源码，包括 Treble GSI 部分
+        repo sync -c --no-clone-bundle --no-tags -j$(nproc)
+        # 克隆 GSI 专用的 Treble 源码
+        git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble
+
+    - name: Compile LineageOS GSI
       run: |
         source build/envsetup.sh
-        lunch lineage_device-userdebug
-        make -j$(nproc) bacon
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
+        # 选择 GSI 的 lunch target
+        lunch treble_arm64_bvN-userdebug
+        # 编译 GSI
+        make -j$(nproc) systemimage
+
+    - name: Upload GSI Build Artifacts
+      uses: actions/upload-artifact@v3
       with:
-        name: lineageos-build
-        path: out/target/product/device/
+        name: lineageos-gsi-build
+        path: out/target/product/generic_system/system.img
