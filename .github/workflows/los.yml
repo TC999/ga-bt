@@ -1,0 +1,29 @@
+name: Build LineageOS
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y openjdk-11-jdk repo git-core
+    - name: Sync LineageOS source
+      run: |
+        repo init -u https://github.com/LineageOS/android.git -b lineage-20.0
+        repo sync
+    - name: Compile LineageOS
+      run: |
+        source build/envsetup.sh
+        lunch lineage_device-userdebug
+        make -j$(nproc) bacon
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: lineageos-build
+        path: out/target/product/device/
