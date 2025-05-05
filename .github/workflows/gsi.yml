@@ -1,0 +1,44 @@
+name: GSI 编译
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LANG: zh_CN.UTF-8
+    steps:
+      - name: 创建文件夹
+        run: mkdir lineage-22-build-gsi
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk git-core language-pack-zh-hans
+
+      - name: 安装 repo
+        run: |
+          wget https://storage.googleapis.com/git-repo-downloads/repo -O ~/repo
+          chmod a+x ~/repo
+          sudo mv ~/repo /usr/local/bin/repo
+          repo --version
+
+      - name: 初始化
+        run: |
+          cd lineage-22-build-gsi
+          repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --git-lfs
+
+      - name: 克隆脚本
+        run: |
+          git clone https://github.com/AndyCGYan/lineage_build_unified lineage_build_unified -b lineage-22-light
+          git clone https://github.com/AndyCGYan/lineage_patches_unified lineage_patches_unified -b lineage-22-light
+
+      - name: 编译
+        run: bash lineage_build_unified/buildbot_unified.sh treble 64VN 64GN
+
+      - name: 上传
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: lingageos
+          path: lineage-22-build-gsi
