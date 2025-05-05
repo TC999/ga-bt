@@ -32,7 +32,7 @@ jobs:
         make -j$(nproc) systemimage
 
     - name: Upload GSI Build Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: lineageos-gsi-build
         path: out/target/product/generic_system/system.img
