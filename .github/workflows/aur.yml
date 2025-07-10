@@ -46,8 +46,7 @@ jobs:
       - name: 编译 zst 包
         run: |
           cd build
-          export MAKEFLAGS="-j4"
-          set -x  # 打开详细日志
+          set -x
           makepkg -s
           mv *.zst ../*.zst
 
