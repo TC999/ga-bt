@@ -24,6 +24,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: 汉化
+        run: |
+          sudo apt-get update
+          sudo apt-get install language-pack-zh-hans
+
       - name: 拉取 aur 源
         run: |
           mkdir build
