@@ -38,10 +38,10 @@ jobs:
           mkdir build
           git clone ${{ inputs.aur }} build
 
-      - name: 安装 makepkg
+      - name: 安装依赖
         run: |
           sudo apt-get update
-          sudo apt-get install makepkg
+          sudo apt-get install makepkg git make gcc fakeroot
 
       - name: 编译 zst 包
         run: |
