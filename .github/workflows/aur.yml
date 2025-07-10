@@ -1,0 +1,48 @@
+name: AUR 编译
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #push:
+    #branches: [ "main" ]
+  #pull_request:
+    #branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      aur:
+        type: string
+        description: 'aur 链接'
+    
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: 拉取 aur 源
+        run: |
+          mkdir build
+          git clone ${{ inputs.aur }} build
+
+      - name: 安装 makepkg
+        run: |
+          sudo apt-get update
+          sudo apt-get install makepkg
+
+      - name: 编译 zst 包
+        run: |
+          cd build
+          makepkg -s
+          mv *.zst ../*.zst
+
+      - name: 上传
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: aur
+          path: |
+            *.zst
