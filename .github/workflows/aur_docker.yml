@@ -1,0 +1,65 @@
+name: Build AUR Package in ArchLinux Docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      aur:
+        type: string
+        description: 'aur 链接'
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  build-aur:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: 拉取 Arch Linux 镜像
+        run: |
+          docker pull archlinux:latest
+
+      - name: 在 Arch Linux 容器内构建 AUR 包
+        run: |
+          # 1. 启动容器，并将当前工作目录挂载到容器的 /workspace
+          docker run --name arch-build -v ${{ github.workspace }}:/workspace -w /workspace archlinux:latest bash -c "
+            set -ex
+            # 2. 更新系统并安装基础开发工具
+            pacman -Syu --noconfirm
+            pacman -S --noconfirm base-devel git sudo
+            # 3. 添加构建用户，防止用 root 构建
+            useradd -m builder
+            echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+            su builder <<'EOF'
+              cd /workspace
+              # 4. 克隆 AUR 包（以 yay 为例，可替换为目标包）
+              git clone ${{ inputs.aur }}
+              cd yay
+              # 5. 构建包
+              makepkg -si --noconfirm
+              # 6. 将产物复制出来
+              cp *.pkg.tar.zst /workspace/
+            EOF
+          "
+
+      - name: 提取 AUR 包产物到宿主机
+        run: |
+          # 拷贝产物（如有需要，可修改为目标产物名）
+          ls -lh *.pkg.tar.zst
+
+      # 可选：上传构建的包到 GitHub Actions 的构件区
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: aur-packages
+          path: "*.pkg.tar.zst"
