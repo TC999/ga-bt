@@ -6,6 +6,9 @@ on:
       aur:
         type: string
         description: 'aur 链接'
+      clean:
+        type: boolean
+        description: '运行器扩容（磁盘空间不足时勾选）'
   # push:
   #   branches:
   #     - main
@@ -26,10 +29,29 @@ jobs:
           sudo apt-get update
           sudo apt-get install language-pack-zh-hans
 
-      - name: 安装 Docker
+      - name: 扩容（可选）
+        if: 
+        uses: rokibhasansagar/slimhub_actions@main
+
+      - name: apt 添加 docker 源密钥
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
+          sudo apt-get install ca-certificates curl
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+      - name: apt 添加 docker 源
+        run: |
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update
+
+      - name: 安装 Docker
+        run: |
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
           sudo systemctl start docker
           sudo systemctl enable docker
 
