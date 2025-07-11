@@ -66,7 +66,8 @@ jobs:
             set -ex
             # 2. 更新系统并安装基础开发工具
             pacman -Syu --noconfirm
-            pacman -S --noconfirm base-devel git sudo
+            pacman -S --noconfirm base-devel git sudo language-pack-zh
+            echo "LANG=zh_CN.UTF-8" | sudo tee /etc/locale.conf
             # 3. 添加构建用户，防止用 root 构建
             useradd -m builder
             echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
@@ -77,12 +78,12 @@ jobs:
               sudo chown -R $(whoami):$(whoami) /workspace
               cd /workspace
               # 4. 克隆 AUR 包（以 yay 为例，可替换为目标包）
-              git clone ${{ inputs.aur }} build
+              sudo git clone ${{ inputs.aur }} build
               cd build
               # 5. 构建包
               makepkg -si --noconfirm
               # 6. 将产物复制出来
-              cp *.pkg.tar.zst /workspace/
+              sudo cp *.pkg.tar.zst /workspace/
             EOF
           "
 
