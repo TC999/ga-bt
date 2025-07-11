@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install language-pack-zh-hans
 
       - name: 扩容（可选）
-        if: 
+        if: ${{ inputs.clean }}
         uses: rokibhasansagar/slimhub_actions@main
 
       - name: apt 添加 docker 源密钥
