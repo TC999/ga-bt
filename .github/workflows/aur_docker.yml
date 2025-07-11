@@ -66,8 +66,10 @@ jobs:
             set -ex
             # 2. 更新系统并安装基础开发工具
             pacman -Syu --noconfirm
-            pacman -S --noconfirm base-devel git sudo language-pack-zh
+            pacman -S --noconfirm base-devel git sudo
+            sed -i 's/^#\(.*zh_CN.UTF-8.*\)/\1/' /etc/locale.conf
             echo "LANG=zh_CN.UTF-8" | sudo tee /etc/locale.conf
+            sudo locale-gen
             # 3. 添加构建用户，防止用 root 构建
             useradd -m builder
             echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
