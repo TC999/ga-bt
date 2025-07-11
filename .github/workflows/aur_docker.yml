@@ -74,7 +74,7 @@ jobs:
               sudo pacman-key --init
               sudo pacman-key --populate
               sudo mkdir -p /tmp/build
-              sudo chown -R $(whoami):$(whoami) /workspace
+              sudo chown -R $(whoami):$(whoami) /tmp
               cd /tmp
               # 4. 克隆 AUR 包（以 yay 为例，可替换为目标包）
               sudo git clone ${{ inputs.aur }} build
