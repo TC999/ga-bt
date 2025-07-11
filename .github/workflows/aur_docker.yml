@@ -61,31 +61,28 @@ jobs:
 
       - name: 在 Arch Linux 容器内构建 AUR 包
         run: |
-          # 1. 启动容器，并将当前工作目录挂载到容器的 /workspace
-          docker run --name arch-build -v ${{ github.workspace }}:/workspace -w /workspace archlinux:latest bash -c "
+          # 1. 启动容器，并将当前工作目录挂载到容器的 /tmp
+          docker run --name arch-build -v ${{ github.workspace }}:/tmp -w /tmp archlinux:latest bash -c "
             set -ex
             # 2. 更新系统并安装基础开发工具
             pacman -Syu --noconfirm
             pacman -S --noconfirm base-devel git sudo
-            sed -i 's/^#\(.*zh_CN.UTF-8.*\)/\1/' /etc/locale.conf
-            echo "LANG=zh_CN.UTF-8" | sudo tee /etc/locale.conf
-            sudo locale-gen
             # 3. 添加构建用户，防止用 root 构建
             useradd -m builder
             echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
             su builder <<'EOF'
               sudo pacman-key --init
               sudo pacman-key --populate
-              sudo mkdir -p /workspace/build
+              sudo mkdir -p /tmp/build
               sudo chown -R $(whoami):$(whoami) /workspace
-              cd /workspace
+              cd /tmp
               # 4. 克隆 AUR 包（以 yay 为例，可替换为目标包）
               sudo git clone ${{ inputs.aur }} build
               cd build
               # 5. 构建包
               makepkg -si --noconfirm
               # 6. 将产物复制出来
-              sudo cp *.pkg.tar.zst /workspace/
+              sudo cp *.pkg.tar.zst /tmp/
             EOF
           "
 
