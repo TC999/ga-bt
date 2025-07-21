@@ -28,7 +28,7 @@ jobs:
           sysctl hw.physmem
           sysctl hw.usermem
           git clone https://github.com/WangGithubUser/FastGithub.git
-          cd fastgithub
+          cd FastGithub
           dotnet build
 
 
