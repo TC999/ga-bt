@@ -1,0 +1,35 @@
+
+name: FreeBSD
+
+on: [workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: A job to run test in FreeBSD
+    steps:
+    - uses: actions/checkout@v4
+    - name: Test in FreeBSD
+      id: test
+      uses: vmactions/freebsd-vm@
+      with:
+        usesh: true
+        prepare: |
+          pkg install -y curl wget git dotnet
+
+        run: |
+          pwd
+          ls -lah
+          whoami
+          env
+          freebsd-version
+          sysctl hw.model
+          sysctl hw.ncpu
+          sysctl hw.physmem
+          sysctl hw.usermem
+          git clone https://github.com/WangGithubUser/FastGithub.git
+          cd fastgithub
+          dotnet build
+
+
+
