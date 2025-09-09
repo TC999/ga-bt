@@ -18,6 +18,8 @@ jobs:
     name: 下载
     runs-on: ubuntu-latest
     steps:
+      - name: 安装 wget
+        run: sudo apt-get update && sudo apt-get install -y wget
       - name: 下载（指定文件名）
         if: ${{ inputs.fname != '' }}
         run: |
