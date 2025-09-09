@@ -6,8 +6,11 @@ on:
         description: '文件链接'
         type: string
       name:
-        description: '文件名'
+        description: '压缩文件名'
         default: download
+        type: string
+      fname:
+        description: '保存文件名'
         type: string
 
 jobs:
@@ -15,7 +18,15 @@ jobs:
     name: 下载
     runs-on: ubuntu-latest
     steps:
-      - name: 下载
+      - name: 下载（指定文件名）
+        if: ${{ inputs.fname != '' }}
+        run: |
+          mkdir download
+          cd download
+          wget ${{ inputs.bt }} -O ${{ inputs.fname }}
+
+      - name: 下载（默认文件名）
+        if: ${{ inputs.fname == '' }}
         run: |
           mkdir download
           cd download
