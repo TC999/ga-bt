@@ -26,9 +26,9 @@ jobs:
     - name: Sync LineageOS source with GSI
       run: |
         # 初始化 LineageOS 源码
-        repo init -u https://github.com/LineageOS/android.git -b lineage-20.0
+        repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --depth=1
         # 同步源码，包括 Treble GSI 部分
-        repo sync -c --no-clone-bundle --no-tags -j$(nproc) --depth=1
+        repo sync -c --no-clone-bundle --no-tags -j$(nproc)
         # 克隆 GSI 专用的 Treble 源码
         git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble
 

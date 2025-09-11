@@ -30,7 +30,7 @@ jobs:
       - name: 初始化
         run: |
           cd lineage-22-build-gsi
-          repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --git-lfs
+          repo init -u https://github.com/LineageOS/android.git -b lineage-22.1 --git-lfs --depth=1
 
       - name: 克隆脚本
         run: |
