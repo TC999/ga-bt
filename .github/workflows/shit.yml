@@ -6,6 +6,7 @@ on:
       repo:
         type: string
         required: true
+        description: '仓库地址'
 
 jobs:
   Check:
