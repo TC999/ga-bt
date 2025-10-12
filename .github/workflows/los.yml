@@ -30,7 +30,7 @@ jobs:
         # 同步源码，包括 Treble GSI 部分
         repo sync -c --no-clone-bundle --no-tags -j$(nproc)
         # 克隆 GSI 专用的 Treble 源码
-        git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble
+        git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble --depth=1 --single-branch
 
     - name: Compile LineageOS GSI
       run: |
