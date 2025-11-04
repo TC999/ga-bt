@@ -1,0 +1,19 @@
+name: yt 下载测试
+
+on:
+  workflow_dispatch:
+
+jobs:
+    yt-dlp-test:
+      runs-on: ubuntu-latest
+      steps:
+  
+      - name: 安装 yt-dlp
+        run: |
+          python -m pip install --upgrade pip
+          pip install yt-dlp
+          python3 -m pip install -U bgutil-ytdlp-pot-provider
+  
+      - name: Test yt-dlp download
+        run: |
+          yt-dlp --version
