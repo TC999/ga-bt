@@ -2,6 +2,10 @@ name: yt 下载测试
 
 on:
   workflow_dispatch:
+    inputs:
+      url:
+        description: '输入要测试下载的 URL'
+        required: true
 
 jobs:
     yt-dlp-test:
@@ -16,4 +20,11 @@ jobs:
   
       - name: Test yt-dlp download
         run: |
-          yt-dlp --version
+          yt-dlp ${{ inputs.url }}
+
+      - name: 上传下载的文件作为工件
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloaded-files
+          path:
+            *.mp4
