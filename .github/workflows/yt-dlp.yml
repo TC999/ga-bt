@@ -27,4 +27,4 @@ jobs:
         with:
           name: downloaded-files
           path:
-            *.mp4
+            ./*.mp4
