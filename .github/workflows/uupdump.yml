@@ -23,7 +23,7 @@ jobs:
 
       - name: 下载 uupdump 脚本
         run: |
-          wget ${{ github.repository }}/releases/download/${{ inputs.profile }}/*.zip -O uupdump.zip
+          wget https://github.com/${{ github.repository }}/releases/download/${{ inputs.profile }}/*.zip -O uupdump.zip
 
       - name: 解压缩脚本
         run: |
