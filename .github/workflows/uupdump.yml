@@ -1,0 +1,42 @@
+name: uupdump 下载
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: '选择一个配置文件'
+        required: true
+        type: string
+      name:
+        description: '输入下载的文件名'
+        required: true
+        type: string
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 安装 wget
+        run: |
+          choco install wget -y
+
+      - name: 下载 uupdump 脚本
+        run: |
+          wget ${{ github.repository }}/releases/download/${{ inputs.profile }}/*.zip -O uupdump.zip
+
+      - name: 解压缩脚本
+        run: |
+          unzip uupdump.zip -d uupdump
+
+      - name: 运行 uupdump 脚本
+        shell: cmd
+        run: |
+          cd uupdump
+          cmd /c uup_download_windows.cmd
+
+      - name: 上传镜像
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.name }}
+          path: uupdump/*.iso
