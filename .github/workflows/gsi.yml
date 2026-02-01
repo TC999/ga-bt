@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: 创建文件夹
         run: mkdir lineage-22-build-gsi
-        
+
       - name: Cleanup
         uses: rokibhasansagar/slimhub_actions@main
 
