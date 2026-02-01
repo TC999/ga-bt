@@ -6,42 +6,42 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    #- name: Checkout code
-    #  uses: actions/checkout@v4
-    - name: 磁盘清理
-      uses: rokibhasansagar/slimhub_actions@main
+      #- name: Checkout code
+      #  uses: actions/checkout@v4
+      - name: 磁盘清理
+        uses: rokibhasansagar/slimhub_actions@main
 
-    - name: Set up environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk git-core
+      - name: Set up environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk git-core
 
-    - name: 安装 repo
-      run: |
-        wget https://storage.googleapis.com/git-repo-downloads/repo -O ~/repo
-        chmod a+x ~/repo
-        sudo mv ~/repo /usr/local/bin/repo
-        repo --version
+      - name: 安装 repo
+        run: |
+          wget https://storage.googleapis.com/git-repo-downloads/repo -O ~/repo
+          chmod a+x ~/repo
+          sudo mv ~/repo /usr/local/bin/repo
+          repo --version
 
-    - name: Sync LineageOS source with GSI
-      run: |
-        # 初始化 LineageOS 源码
-        repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --depth=1 --single-branch
-        # 同步源码，包括 Treble GSI 部分
-        repo sync -c --no-clone-bundle --no-tags -j$(nproc)
-        # 克隆 GSI 专用的 Treble 源码
-        git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble --depth=1 --single-branch
+      - name: Sync LineageOS source with GSI
+        run: |
+          # 初始化 LineageOS 源码
+          repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --depth=1 --single-branch
+          # 同步源码，包括 Treble GSI 部分
+          repo sync -c --no-clone-bundle --no-tags -j$(nproc)
+          # 克隆 GSI 专用的 Treble 源码
+          git clone https://github.com/LineageOS/treble_experimentations.git device/generic/treble --depth=1 --single-branch
 
-    - name: Compile LineageOS GSI
-      run: |
-        source build/envsetup.sh
-        # 选择 GSI 的 lunch target
-        lunch treble_arm64_bvN-userdebug
-        # 编译 GSI
-        make -j$(nproc) systemimage
+      - name: Compile LineageOS GSI
+        run: |
+          source build/envsetup.sh
+          # 选择 GSI 的 lunch target
+          lunch treble_arm64_bvN-userdebug
+          # 编译 GSI
+          make -j$(nproc) systemimage
 
-    - name: Upload GSI Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: lineageos-gsi-build
-        path: out/target/product/generic_system/system.img
+      - name: Upload GSI Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lineageos-gsi-build
+          path: out/target/product/generic_system/system.img

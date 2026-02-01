@@ -37,8 +37,8 @@ jobs:
       - name: Setup MSVC 2022 Environment
         #shell: pwsh
         run: |
-          choco install -y visualstudio2022buildtools --package-parameters “--add Microsoft.VisualStudio.Component.VC.ATL” 
-          choco install -y visualstudio2022-workload-vctools visualstudio2022-workload-nativedesktop visualstudio2022-workload-manageddesktopbuildtools 
+          choco install -y visualstudio2022buildtools --package-parameters “--add Microsoft.VisualStudio.Component.VC.ATL”
+          choco install -y visualstudio2022-workload-vctools visualstudio2022-workload-nativedesktop visualstudio2022-workload-manageddesktopbuildtools
 
       # Run build script
       - name: Run CI Build

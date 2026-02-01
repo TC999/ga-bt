@@ -2,13 +2,13 @@ name: 下载 Docker 镜像
 
 on:
   workflow_dispatch:
-      inputs:
-        image:
-          type: string
-          description: '镜像链接'
-        name:
-          type: string
-          description: '文件名'
+    inputs:
+      image:
+        type: string
+        description: '镜像链接'
+      name:
+        type: string
+        description: '文件名'
 
 
 jobs:
