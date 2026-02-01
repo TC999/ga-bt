@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir wiki
           cd wiki
-          wget -m --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0" -r -k -p --no-clobber --adjust-extension -e robots=off --reject="*.php" https://wiki.octave.org/GNU_Octave_Wiki
+          wget -m --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0" -r -k -p --no-clobber --adjust-extension -e robots=off --reject="*.php" https://wiki.octave.org/GNU_Octave_Wiki
         
       - name: 上传
         uses: actions/upload-artifact@v4
