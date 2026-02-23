@@ -1,0 +1,36 @@
+name: Boost 编译
+
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Boost 版本 (e.g., 1.76.0)'
+        required: true
+        default: '1.76.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: 安装依赖
+        run: |
+          apt-get update
+          apt-get install -y git cmake make gcc g++ clang
+
+      - name: 下载源码
+        run: |
+          git clone https://github.com/boostorg/boost.git --depth=1 ==single-branch -b ${{ inputs.version }}
+          cd boost
+          git submodule update --init --recursive --depth=1
+
+      - name: 编译
+        run: |
+          cd boost
+          mkdir build
+          cd build
+          cmake ..
+          make -j$(nproc)
