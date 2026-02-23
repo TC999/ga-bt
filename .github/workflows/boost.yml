@@ -6,7 +6,7 @@ on:
       version:
         description: 'Boost 版本 (e.g., 1.76.0)'
         required: true
-        default: '1.76.0'
+        default: 'boost-1.74.0'
 
 jobs:
   build:
