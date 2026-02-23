@@ -30,7 +30,5 @@ jobs:
       - name: 编译
         run: |
           cd boost
-          mkdir build
-          cd build
-          cmake ..
-          make -j$(nproc)
+          ./bootstrap.sh
+          ./b2
