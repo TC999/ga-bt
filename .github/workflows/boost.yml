@@ -23,7 +23,7 @@ jobs:
 
       - name: 下载源码
         run: |
-          git clone https://github.com/boostorg/boost.git --depth=1 ==single-branch -b ${{ inputs.version }}
+          git clone https://github.com/boostorg/boost.git --depth=1 --single-branch -b ${{ inputs.version }}
           cd boost
           git submodule update --init --recursive --depth=1
 
