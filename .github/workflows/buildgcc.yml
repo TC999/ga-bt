@@ -10,17 +10,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      LANG: zh_CN.UTF-8
+      LC_ALL: zh_CN.UTF-8
     steps:
+      - name: 汉化
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y language-pack-zh-hans
+
+      - name: 磁盘清理
+        uses: rokibhasansagar/slimhub_actions@main
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-          build-essential \
-          libgmp-dev \
-          libmpfr-dev \
-          libmpc-dev \
-          libc6-dev \
-          libtbb-dev
+          build-essential libgmp-dev libmpfr-de libmpc-dev libc6-dev libtbb-dev gcc-multilib g++-multilib
       - name: Checkout
         run: |
           git clone https://github.com/gcc-mirror/gcc.git --depth=1 --single-branch -b ${{ inputs.version }} .
