@@ -22,9 +22,8 @@ jobs:
           libc6-dev \
           libtbb-dev
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.version }}
+        run: |
+          git clone https://github.com/gcc-mirror/gcc.git --depth=1 --single-branch -b ${{ inputs.version }} .
       
       - name: Build GCC
         run: |
