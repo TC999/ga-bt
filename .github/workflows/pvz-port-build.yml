@@ -15,7 +15,7 @@ jobs:
       - name: 安装依赖
         run: |
           apt-get update
-          apt install -y git cmake ninja-build libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev clang gcc g++
+          apt install -y git cmake ninja-build libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev clang gcc g++ pkg-config build-essential
 
       - name: 检出代码
         run: |
