@@ -11,15 +11,15 @@ jobs:
     env:
       DEBIAN_FRONTEND: noninteractive
   
-    steps:
-      - name: 检出代码
-        run: |
-          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch .
-  
+    steps:  
       - name: 安装依赖
         run: |
           apt-get update
-          apt install -y cmake ninja-build libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev
+          apt install -y git cmake ninja-build libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev
+
+      - name: 检出代码
+        run: |
+          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch .
 
       - name: 配置
         run: |
