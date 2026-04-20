@@ -19,7 +19,7 @@ jobs:
 
       - name: 检出代码
         run: |
-          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch .
+          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch -b 20.04 .
 
       - name: 配置
         run: |
