@@ -1,0 +1,37 @@
+name: PVZ Portable Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04-arm
+    container:
+      image: ubuntu:20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+  
+    steps:
+      - name: 检出代码
+        run: |
+          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch .
+  
+      - name: 安装依赖
+        run: |
+          apt-get update
+          apt install -y cmake ninja-build libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev
+
+      - name: 配置
+        run: |
+          mkdir build
+          cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: 编译
+        run: |
+          cmake --build build
+
+      - name: 上传编译结果
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvz-port-build
+          path: build/pvz-portable
