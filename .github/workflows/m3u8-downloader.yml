@@ -1,0 +1,37 @@
+name: M3U8 下载器
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: '请输入 M3U8 文件的 URL'
+        required: true
+        default: 'https://example.com/playlist.m3u8'
+      name:
+        description: '请输入保存的视频文件名（不带扩展名）'
+        required: true
+        default: 'downloaded_video'
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y language-pack-zh-hans ffmpeg
+
+      - name: 下载 M3U8 下载器
+        run: |
+          wget https://github.com/nilaoda/N_m3u8DL-RE/releases/download/v0.5.1-beta/N_m3u8DL-RE_v0.5.1-beta_linux-x64_20251029.tar.gz -O 1.tar.gz
+          tar -xzf 1.tar.gz
+
+      - name: 下载视频
+        run: |
+          ./N_m3u8DL-RE "${{ inputs.url }}" --save-dir download --save-name ${{ inputs.name }}
+
+      - name: 上传
+          uses: actions/upload-artifact@v4
+          with:
+            name: ${{ inputs.name }}
+            path: download
