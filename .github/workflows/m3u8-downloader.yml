@@ -11,6 +11,12 @@ on:
         description: '请输入保存的视频文件名（不带扩展名）'
         required: true
         default: 'downloaded_video'
+      release:
+        description: '是否添加到发行版'
+        type: boolean
+      tag_name:
+        description: '请输入发行版标签名称（如果选择添加到发行版）'
+        type: string
 
 jobs:
   download:
@@ -38,3 +44,11 @@ jobs:
         with:
           name: ${{ inputs.name }}
           path: download
+
+      - name: 自动发布发行版
+        if: ${{ inputs.release }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag_name }}
+          files: |
+            download/*
