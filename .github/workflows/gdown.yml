@@ -26,7 +26,7 @@ jobs:
         # 如果下载的是文件夹，把 gdown 换成 gdown --folder
         mkdir download
         cd download
-        gdown --id "1ODjdjrIDi76Mn7ekZ_GBK42ZsR7vdH58" --remaining-ok
+        gdown 1ODjdjrIDi76Mn7ekZ_GBK42ZsR7vdH58
 
     - name: Upload to GitHub Artifacts
       uses: actions/upload-artifact@v4
