@@ -24,6 +24,7 @@ jobs:
       run: |
         # 将下面的 FILE_ID 替换 your_file_id
         # 如果下载的是文件夹，把 gdown 换成 gdown --folder
+        mkdir download
         cd download
         gdown --id "1ODjdjrIDi76Mn7ekZ_GBK42ZsR7vdH58" --remaining-ok
 
