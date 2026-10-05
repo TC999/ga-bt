@@ -24,7 +24,12 @@ jobs:
       - name: 安装依赖
         run: |
           apt-get update
-          apt install -y git build-essential cmake ninja-build pkg-config libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev libfmt-dev
+          apt install -y git build-essential gcc-10 g++-10 cmake ninja-build pkg-config libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev libfmt-dev
+
+          # 把 gcc/g++ 默认指向 10
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+          update-alternatives --install /usr/bin/c++  c++  /usr/bin/g++-10 100
 
       - name: 检出代码
         run: |
@@ -33,11 +38,11 @@ jobs:
       - name: 配置
         run: |
           mkdir build
-          cmake -G Ninja -B build-ubuntu20-doc -DCMAKE_BUILD_TYPE=Releas
+          cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Releas
 
       - name: 编译
         run: |
-          cmake --build build-ubuntu20-doc
+          cmake --build build
 
       - name: 上传编译结果
         uses: actions/upload-artifact@v4
