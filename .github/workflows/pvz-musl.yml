@@ -13,11 +13,10 @@ jobs:
       - name: 安装依赖
         run: |
           apk update
-          apk add git build-base cmake ninja musl-dev \
+          apk add --no-cache \
+          build-base cmake ninja musl-dev \
           libogg-dev libjpeg-turbo-dev libopenmpt-dev libpng-dev \
-          libvorbis-dev libmpg123-dev sdl2-dev \
-          libogg-static libjpeg-turbo-static libopenmpt-static \
-          libpng-static libvorbis-static libmpg123-static sdl2-static
+          libvorbis-dev mpg123-dev sdl2 sdl2-dev
 
       - name: 检出代码
         run: |
