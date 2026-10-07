@@ -27,6 +27,7 @@ jobs:
           cd openmpt
           make -j$(nproc)
           make install
+          ls -la /usr/local/lib/libopenmpt.*
 
       - name: 检出代码
         run: |
