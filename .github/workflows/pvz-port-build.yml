@@ -24,7 +24,7 @@ jobs:
       - name: 安装依赖
         run: |
           apt-get update
-          apt install -y git build-essential gcc-10 g++-10 cmake ninja-build pkg-config libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev libfmt-dev
+          apt install -y git build-essential gcc-10 g++-10 cmake ninja-build pkg-config libogg-dev libjpeg-dev libopenmpt-dev libpng-dev libvorbis-dev libmpg123-dev libsdl2-dev
 
           # 把 gcc/g++ 默认指向 10
           update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
@@ -33,7 +33,7 @@ jobs:
 
       - name: 检出代码
         run: |
-          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch -b 20.04 .
+          git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch -b test .
 
       - name: 配置
         run: |
