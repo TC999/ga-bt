@@ -15,7 +15,7 @@ jobs:
           apk update
           apk add --no-cache \
           git build-base cmake ninja musl-dev \
-          libogg-dev libjpeg-turbo-dev libopenmpt-dev libpng-dev \
+          libogg-dev libjpeg-turbo-dev libpng-dev \
           libvorbis-dev mpg123-dev sdl2 sdl2-dev
 
       - name: 源码编译 openmpt
