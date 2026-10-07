@@ -31,6 +31,28 @@ jobs:
           update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
           update-alternatives --install /usr/bin/c++  c++  /usr/bin/g++-10 100
 
+      - name: 源码安装 libfmt 10
+        run: |
+          # 1. 下载源码（以 10.2.1 为例）
+          git clone https://github.com/fmtlib/fmt.git --depth=1 --single-branch -b 10.2.1
+          cd fmt
+
+          # 2. 配置构建（使用 GCC 10 和 Ninja）
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc-10 \
+            -DCMAKE_CXX_COMPILER=g++-10 \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DFMT_TEST=OFF \
+            -DFMT_DOC=OFF \
+            -DCMAKE_INSTALL_PREFIX=/usr/local
+
+          # 3. 编译并安装
+          cmake --build build
+          cmake --install build
+          cd ..
+          rm -rf fmt
+
       - name: 检出代码
         run: |
           git clone https://github.com/TC999/PvZ-Portable.git --depth=1 --single-branch -b 20.04 .
