@@ -22,14 +22,16 @@ jobs:
           Expand-Archive premake.zip -DestinationPath "$env:RUNNER_TEMP\premake"
           echo "$env:RUNNER_TEMP\premake" | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
 
+      - uses: microsoft/setup-msbuild@v2
+
       - name: Install SDL2 via vcpkg
         shell: pwsh
         run: |
           vcpkg install sdl2 sdl2-image sdl2-ttf --triplet x64-windows
           $root = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows"
-          # MSVC 会读取 INCLUDE / LIB 环境变量，这样不用改 premake 脚本
-          "INCLUDE=$root\include;$root\include\SDL2;$env:INCLUDE" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
-          "LIB=$root\lib;$env:LIB" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          # cl.exe / link.exe 会读取 CL / LINK 环境变量，不会被 MSBuild 覆盖
+          "CL=/I`"$root\include`" /I`"$root\include\SDL2`"" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          "LINK=/LIBPATH:`"$root\lib`"" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           "VCPKG_BIN=$root\bin" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
 
       - name: Generate and build
