@@ -27,18 +27,22 @@ jobs:
       - name: Install SDL2 via vcpkg
         shell: pwsh
         run: |
-          vcpkg install sdl2 sdl2-image sdl2-ttf --triplet x64-windows
-          $root = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows"
+          $triplet = "x86-windows"
+          vcpkg install sdl2 sdl2-image sdl2-ttf --triplet $triplet
+          $root = "$env:VCPKG_INSTALLATION_ROOT\installed\$triplet"
           "INCLUDE=$root\include;$root\include\SDL2;" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           "LIB=$root\lib;" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           "VCPKG_BIN=$root\bin" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          "VCPKG_ROOT=$root" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
 
       - name: Generate and build
         shell: pwsh
         run: |
           premake5 vs2022
           $sln = (Get-ChildItem build -Filter *.sln | Select-Object -First 1).FullName
-          msbuild $sln /m /p:Configuration=Release
+          $includePath = "$env:VCPKG_ROOT\include;`$(IncludePath)"
+          $libraryPath = "$env:VCPKG_ROOT\lib;`$(LibraryPath)"
+          msbuild $sln /m /p:Configuration=Release /p:IncludePath="$includePath" /p:LibraryPath="$libraryPath"
 
       - name: Collect artifacts
         shell: pwsh
