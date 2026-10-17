@@ -29,9 +29,8 @@ jobs:
         run: |
           vcpkg install sdl2 sdl2-image sdl2-ttf --triplet x64-windows
           $root = "$env:VCPKG_INSTALLATION_ROOT\installed\x64-windows"
-          # cl.exe / link.exe 会读取 CL / LINK 环境变量，不会被 MSBuild 覆盖
-          "CL=/I`"$root\include`" /I`"$root\include\SDL2`"" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
-          "LINK=/LIBPATH:`"$root\lib`"" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          "INCLUDE=$root\include;$root\include\SDL2;" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+          "LIB=$root\lib;" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
           "VCPKG_BIN=$root\bin" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
 
       - name: Generate and build
