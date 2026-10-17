@@ -1,9 +1,6 @@
-name: build-windows
+name: th06-build-windows
 
 on:
-  push:
-    branches: [portable]
-  pull_request:
   workflow_dispatch:
 
 env:
@@ -13,9 +10,9 @@ jobs:
   msvc:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+      - name: Git clone
+        run: |
+          git clone https://github.com/TC999/th06.git --depth=1 -b portable .
 
       - name: Install premake5
         shell: pwsh
@@ -57,9 +54,9 @@ jobs:
   mingw:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+      - name: Git clone
+        run: |
+          git clone https://github.com/TC999/th06.git --depth=1 -b portable .
 
       - name: Install premake5
         shell: pwsh
